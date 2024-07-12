@@ -1,4 +1,4 @@
-package com.wwsis.sss.dao;
+ppackage com.wwsis.sss.dao;
 
 import com.wwsis.sss.entity.Payment;
 import java.util.List;
