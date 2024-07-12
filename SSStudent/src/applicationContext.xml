@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/tx
+           http://www.springframework.org/schema/tx/spring-tx.xsd">
+<!-- Declaration of StudentDao bean -->
+    <bean id="studentDao" class="com.wwsis.sss.dao.impl.StudentDaoImpl" />
+
+    <!-- Declaration of UserDao bean -->
+    <bean id="userDao" class="com.wwsis.sss.dao.impl.UserDaoImpl" />
+
+    <!-- Declaration of LibraryDao bean -->
+    <bean id="libraryDao" class="com.wwsis.sss.dao.impl.LibraryDaoImpl" />
+
+    <!-- Declaration of PaymentDao bean -->
+    <bean id="paymentDao" class="com.wwsis.sss.dao.impl.PaymentDaoImpl" />
+
+    <!-- Declaration of SubjectDao bean -->
+    <bean id="subjectDao" class="com.wwsis.sss.dao.impl.SubjectDaoImpl" />
+
+    <!-- Data Source Configuration -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/yourdatabase"/>
+        <property name="username" value="yourusername"/>
+        <property name="password" value="yourpassword"/>
+    </bean>
+
+    <!-- JPA EntityManagerFactory Configuration -->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan" value="com.wwsis.sss.entity"/>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+        </property>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- Transaction Manager Configuration -->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+
+    <!-- Enable annotation-driven transaction management -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <!-- Declare DAO Beans -->
+    <bean id="studentDao" class="com.wwsis.sss.dao.impl.StudentDaoImpl"/>
+    <bean id="gradeDao" class="com.wwsis.sss.dao.impl.GradeDaoImpl"/>
+    <bean id="libraryDao" class="com.wwsis.sss.dao.impl.LibraryDaoImpl"/>
+    <bean id="paymentDao" class="com.wwsis.sss.dao.impl.PaymentDaoImpl"/>
+
+    <!-- Enable component scanning -->
+    <context:component-scan base-package="com.wwsis.sss"/>
+
+</beans>
